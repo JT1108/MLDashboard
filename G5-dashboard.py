@@ -8,7 +8,7 @@ from sklearn.metrics import silhouette_score
 from sklearn.mixture import GaussianMixture
 from sklearn.decomposition import PCA
 from sklearn.cluster import DBSCAN
-# from sklearn_extra.cluster import KMedoids
+from sklearn_extra.cluster import KMedoids
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import silhouette_score
 import plotly.express as px
@@ -510,177 +510,177 @@ st.write("DBSCAN Silhouette Score (Without Outliers):", dbscan2_silhouette)
 
 #------------------------------------------------------------------------------------#
 
-# # K-Medoids
+# K-Medoids
 
-# st.title("   ")
-# st.title("   ")
-# st.title("K-Medoids")
+st.title("   ")
+st.title("   ")
+st.title("K-Medoids")
 
-# import streamlit as st
-# import matplotlib.pyplot as plt
-# from sklearn_extra.cluster import KMedoids
-# from sklearn.metrics import silhouette_score
-# from sklearn.preprocessing import MinMaxScaler
+import streamlit as st
+import matplotlib.pyplot as plt
+from sklearn_extra.cluster import KMedoids
+from sklearn.metrics import silhouette_score
+from sklearn.preprocessing import MinMaxScaler
 
-# # Load data
-# df_outliers = pd.read_csv("earthquake_data_outliers.csv")
-# df_no_outliers = pd.read_csv("earthquake_data_no_outliers.csv")
+# Load data
+df_outliers = pd.read_csv("earthquake_data_outliers.csv")
+df_no_outliers = pd.read_csv("earthquake_data_no_outliers.csv")
 
-# # Select features for clustering
-# clustering_data_1 = df_outliers[["magnitude", "cdi", "mmi", "tsunami", "sig", "dmin", "gap", "depth"]]
-# clustering_data_2 = df_no_outliers[["magnitude", "cdi", "mmi", "tsunami", "sig", "dmin", "gap", "depth"]]
+# Select features for clustering
+clustering_data_1 = df_outliers[["magnitude", "cdi", "mmi", "tsunami", "sig", "dmin", "gap", "depth"]]
+clustering_data_2 = df_no_outliers[["magnitude", "cdi", "mmi", "tsunami", "sig", "dmin", "gap", "depth"]]
 
-# # Scale the data
-# scaler = MinMaxScaler()
-# minmax_data_scaled_1 = scaler.fit_transform(clustering_data_1)
-# minmax_data_scaled_2 = scaler.fit_transform(clustering_data_2)
+# Scale the data
+scaler = MinMaxScaler()
+minmax_data_scaled_1 = scaler.fit_transform(clustering_data_1)
+minmax_data_scaled_2 = scaler.fit_transform(clustering_data_2)
 
-# # Function to calculate WCSS for K-Medoids clustering
-# def calculate_wcss(data):
-#     wcss = []
-#     for k in range(1, 11):
-#         kmedoids = KMedoids(n_clusters=k, random_state=42)
-#         kmedoids.fit(data)
-#         wcss.append(kmedoids.inertia_)
-#     return wcss
+# Function to calculate WCSS for K-Medoids clustering
+def calculate_wcss(data):
+    wcss = []
+    for k in range(1, 11):
+        kmedoids = KMedoids(n_clusters=k, random_state=42)
+        kmedoids.fit(data)
+        wcss.append(kmedoids.inertia_)
+    return wcss
 
-# # Calculate WCSS for both datasets
-# wcss_1 = calculate_wcss(minmax_data_scaled_1)
-# wcss_2 = calculate_wcss(minmax_data_scaled_2)
+# Calculate WCSS for both datasets
+wcss_1 = calculate_wcss(minmax_data_scaled_1)
+wcss_2 = calculate_wcss(minmax_data_scaled_2)
 
-# # Streamlit app
-# st.title("   ")
-# st.header('Elbow Method (K-Medoids)')
+# Streamlit app
+st.title("   ")
+st.header('Elbow Method (K-Medoids)')
 
-# # Plot for dataframe with outliers
-# st.subheader('With outliers')
-# fig1, ax1 = plt.subplots()
-# ax1.plot(range(1, 11), wcss_1, marker='o')
-# ax1.set_xlabel('Number of Clusters')
-# ax1.set_ylabel('WCSS')
-# ax1.set_title('Elbow Method for Optimal K (With Outliers)')
-# ax1.grid(True)
-# st.pyplot(fig1)
+# Plot for dataframe with outliers
+st.subheader('With outliers')
+fig1, ax1 = plt.subplots()
+ax1.plot(range(1, 11), wcss_1, marker='o')
+ax1.set_xlabel('Number of Clusters')
+ax1.set_ylabel('WCSS')
+ax1.set_title('Elbow Method for Optimal K (With Outliers)')
+ax1.grid(True)
+st.pyplot(fig1)
 
-# # Plot for dataframe without outliers
-# st.subheader('Without outliers')
-# fig2, ax2 = plt.subplots()
-# ax2.plot(range(1, 11), wcss_2, marker='o')
-# ax2.set_xlabel('Number of Clusters')
-# ax2.set_ylabel('WCSS')
-# ax2.set_title('Elbow Method for Optimal K (Without Outliers)')
-# ax2.grid(True)
-# st.pyplot(fig2)
+# Plot for dataframe without outliers
+st.subheader('Without outliers')
+fig2, ax2 = plt.subplots()
+ax2.plot(range(1, 11), wcss_2, marker='o')
+ax2.set_xlabel('Number of Clusters')
+ax2.set_ylabel('WCSS')
+ax2.set_title('Elbow Method for Optimal K (Without Outliers)')
+ax2.grid(True)
+st.pyplot(fig2)
 
-# # Function to calculate silhouette scores and average silhouette scores
-# def calculate_silhouette(X, n_clusters):
-#     avg_silhouette_scores = []
-#     high = 0
+# Function to calculate silhouette scores and average silhouette scores
+def calculate_silhouette(X, n_clusters):
+    avg_silhouette_scores = []
+    high = 0
     
-#     for n in n_clusters:
-#         clusterer = KMedoids(n_clusters=n, random_state=42)
-#         cluster_labels = clusterer.fit_predict(X)
+    for n in n_clusters:
+        clusterer = KMedoids(n_clusters=n, random_state=42)
+        cluster_labels = clusterer.fit_predict(X)
         
-#         silhouette_avg = silhouette_score(X, cluster_labels)
-#         avg_silhouette_scores.append(silhouette_avg)
+        silhouette_avg = silhouette_score(X, cluster_labels)
+        avg_silhouette_scores.append(silhouette_avg)
         
-#         if silhouette_avg > high:
-#             high = silhouette_avg
+        if silhouette_avg > high:
+            high = silhouette_avg
             
-#         print("For n_clusters =", n, "The silhouette_score is:", silhouette_avg)
+        print("For n_clusters =", n, "The silhouette_score is:", silhouette_avg)
         
-#     print("The Highest silhouette_score is:", high)
-#     return avg_silhouette_scores
+    print("The Highest silhouette_score is:", high)
+    return avg_silhouette_scores
 
-# # Function to plot silhouette scores
-# def plot_silhouette(avg_silhouette_scores, n_clusters):
-#     fig, ax = plt.subplots(figsize=(10, 6))
-#     ax.plot(n_clusters, avg_silhouette_scores, marker='o', linestyle='--')
-#     ax.set_title('Silhouette Method')
-#     ax.set_xlabel('Number of Clusters')
-#     ax.set_ylabel('Silhouette Score')
-#     ax.grid(True)
-#     st.pyplot(fig)
+# Function to plot silhouette scores
+def plot_silhouette(avg_silhouette_scores, n_clusters):
+    fig, ax = plt.subplots(figsize=(10, 6))
+    ax.plot(n_clusters, avg_silhouette_scores, marker='o', linestyle='--')
+    ax.set_title('Silhouette Method')
+    ax.set_xlabel('Number of Clusters')
+    ax.set_ylabel('Silhouette Score')
+    ax.grid(True)
+    st.pyplot(fig)
 
-# # Streamlit app
-# st.title("   ")
-# st.header('Silhouette Method (K-Medoids)')
+# Streamlit app
+st.title("   ")
+st.header('Silhouette Method (K-Medoids)')
 
-# # Range of clusters to try
-# range_n_clusters = [2, 3, 4, 5, 6, 7, 8]
+# Range of clusters to try
+range_n_clusters = [2, 3, 4, 5, 6, 7, 8]
 
-# # Apply the function to minmax_data_scaled_1
-# st.subheader('With Outliers')
-# avg_silhouette_scores_1 = calculate_silhouette(minmax_data_scaled_1, range_n_clusters)
-# plot_silhouette(avg_silhouette_scores_1, range_n_clusters)
+# Apply the function to minmax_data_scaled_1
+st.subheader('With Outliers')
+avg_silhouette_scores_1 = calculate_silhouette(minmax_data_scaled_1, range_n_clusters)
+plot_silhouette(avg_silhouette_scores_1, range_n_clusters)
 
-# # Apply the function to minmax_data_scaled_2
-# st.subheader('Without Outliers')
-# avg_silhouette_scores_2 = calculate_silhouette(minmax_data_scaled_2, range_n_clusters)
-# plot_silhouette(avg_silhouette_scores_2, range_n_clusters)
+# Apply the function to minmax_data_scaled_2
+st.subheader('Without Outliers')
+avg_silhouette_scores_2 = calculate_silhouette(minmax_data_scaled_2, range_n_clusters)
+plot_silhouette(avg_silhouette_scores_2, range_n_clusters)
 
-# # Perform K-Medoids clustering
-# kmedoidsmin1 = KMedoids(n_clusters=2).fit(minmax_data_scaled_1)
-# labels1 = kmedoidsmin1.labels_
+# Perform K-Medoids clustering
+kmedoidsmin1 = KMedoids(n_clusters=2).fit(minmax_data_scaled_1)
+labels1 = kmedoidsmin1.labels_
 
-# # Assign clusters to original data
-# df_cluster_with_kmedoids = pd.concat([clustering_data_1, pd.DataFrame({'Cluster_KMD': labels1})], axis=1)
+# Assign clusters to original data
+df_cluster_with_kmedoids = pd.concat([clustering_data_1, pd.DataFrame({'Cluster_KMD': labels1})], axis=1)
 
-# # Perform PCA for visualization
-# pca = PCA(n_components=2)
-# pca_result1 = pca.fit_transform(minmax_data_scaled_1)
+# Perform PCA for visualization
+pca = PCA(n_components=2)
+pca_result1 = pca.fit_transform(minmax_data_scaled_1)
 
-# # Streamlit app
-# st.header('K-Medoids Clustering with PCA Visualization')
+# Streamlit app
+st.header('K-Medoids Clustering with PCA Visualization')
 
-# # With outliers
-# st.header('With Outliers')
-# fig1, ax1 = plt.subplots(figsize=(10, 6))
-# for cluster_label in set(labels1):
-#     ax1.scatter(pca_result1[labels1 == cluster_label, 0],
-#                 pca_result1[labels1 == cluster_label, 1],
-#                 label=f'Cluster_KMD {cluster_label}', alpha=0.7)
-# ax1.set_title('K-Medoids Clustering with PCA Visualization (With Outliers)')
-# ax1.set_xlabel('PCA Component 1')
-# ax1.set_ylabel('PCA Component 2')
-# ax1.legend()
-# st.pyplot(fig1)
+# With outliers
+st.header('With Outliers')
+fig1, ax1 = plt.subplots(figsize=(10, 6))
+for cluster_label in set(labels1):
+    ax1.scatter(pca_result1[labels1 == cluster_label, 0],
+                pca_result1[labels1 == cluster_label, 1],
+                label=f'Cluster_KMD {cluster_label}', alpha=0.7)
+ax1.set_title('K-Medoids Clustering with PCA Visualization (With Outliers)')
+ax1.set_xlabel('PCA Component 1')
+ax1.set_ylabel('PCA Component 2')
+ax1.legend()
+st.pyplot(fig1)
 
-# # Calculate silhouette score
-# kmedoidsmin1_silhouette = silhouette_score(minmax_data_scaled_1, labels1, metric='euclidean')
+# Calculate silhouette score
+kmedoidsmin1_silhouette = silhouette_score(minmax_data_scaled_1, labels1, metric='euclidean')
 
-# # Perform K-Medoids clustering for minmax_data_scaled_2
-# kmedoidsmin2 = KMedoids(n_clusters=5).fit(minmax_data_scaled_2)
-# labels2 = kmedoidsmin2.labels_
+# Perform K-Medoids clustering for minmax_data_scaled_2
+kmedoidsmin2 = KMedoids(n_clusters=5).fit(minmax_data_scaled_2)
+labels2 = kmedoidsmin2.labels_
 
-# # Assign clusters to original data
-# df_cluster_with_kmedoids_NO = pd.concat([clustering_data_2, pd.DataFrame({'Cluster_KMD_NO': labels2})], axis=1)
+# Assign clusters to original data
+df_cluster_with_kmedoids_NO = pd.concat([clustering_data_2, pd.DataFrame({'Cluster_KMD_NO': labels2})], axis=1)
 
-# # Perform PCA for visualization
-# pca = PCA(n_components=5)
-# pca_result2 = pca.fit_transform(minmax_data_scaled_2)
+# Perform PCA for visualization
+pca = PCA(n_components=5)
+pca_result2 = pca.fit_transform(minmax_data_scaled_2)
 
-# # Without outliers
-# st.header('Without Outliers')
-# fig2, ax2 = plt.subplots(figsize=(10, 6))
-# for cluster_label in set(labels2):
-#     ax2.scatter(pca_result2[labels2 == cluster_label, 0],
-#                 pca_result2[labels2 == cluster_label, 1],
-#                 label=f'Cluster_KMD_NO {cluster_label}', alpha=0.7)
-# ax2.set_title('K-Medoids Clustering with PCA Visualization (No Outliers)')
-# ax2.set_xlabel('PCA Component 1')
-# ax2.set_ylabel('PCA Component 2')
-# ax2.legend()
-# st.pyplot(fig2)
+# Without outliers
+st.header('Without Outliers')
+fig2, ax2 = plt.subplots(figsize=(10, 6))
+for cluster_label in set(labels2):
+    ax2.scatter(pca_result2[labels2 == cluster_label, 0],
+                pca_result2[labels2 == cluster_label, 1],
+                label=f'Cluster_KMD_NO {cluster_label}', alpha=0.7)
+ax2.set_title('K-Medoids Clustering with PCA Visualization (No Outliers)')
+ax2.set_xlabel('PCA Component 1')
+ax2.set_ylabel('PCA Component 2')
+ax2.legend()
+st.pyplot(fig2)
 
-# # Calculate silhouette score
-# kmedoidsmin2_silhouette = silhouette_score(minmax_data_scaled_2, labels2, metric='euclidean')
+# Calculate silhouette score
+kmedoidsmin2_silhouette = silhouette_score(minmax_data_scaled_2, labels2, metric='euclidean')
 
-# # Print silhouette scores
-# st.title("   ")
-# st.header('Silhouette Scores')
-# st.write("Silhouette Score (With Outliers):", kmedoidsmin1_silhouette)
-# st.write("Silhouette Score (Without Outliers):", kmedoidsmin2_silhouette)
+# Print silhouette scores
+st.title("   ")
+st.header('Silhouette Scores')
+st.write("Silhouette Score (With Outliers):", kmedoidsmin1_silhouette)
+st.write("Silhouette Score (Without Outliers):", kmedoidsmin2_silhouette)
 
 #------------------------------------------------------------------------------------#
 
@@ -700,9 +700,9 @@ scores = {
     'GMM1': gmm1_silhouette,
     'GMM2': gmm2_silhouette,
     'DBSCAN1': dbscan1_silhouette,
-    'DBSCAN2': dbscan2_silhouette
-    # 'KMedoidsMin1': kmedoidsmin1_silhouette,
-    # 'KMedoidsMin2': kmedoidsmin2_silhouette
+    'DBSCAN2': dbscan2_silhouette,
+    'KMedoidsMin1': kmedoidsmin1_silhouette,
+    'KMedoidsMin2': kmedoidsmin2_silhouette
 }
 
 # Extracting names and scores
@@ -716,9 +716,9 @@ custom_colors = {
     'GMM1': 'dodgerblue',
     'GMM2': 'skyblue',
     'DBSCAN1': 'navajowhite',
-    'DBSCAN2': 'antiquewhite'
-    # 'KMedoidsMin1': 'mediumseagreen',
-    # 'KMedoidsMin2': 'lightgreen'
+    'DBSCAN2': 'antiquewhite',
+    'KMedoidsMin1': 'mediumseagreen',
+    'KMedoidsMin2': 'lightgreen'
 }
 
 # Plotting with custom colors
