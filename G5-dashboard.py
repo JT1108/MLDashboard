@@ -20,7 +20,7 @@ from minisom import MiniSom
 # Earthquake Location and Impact Visualization
 
 # Load the earthquake data
-df = pd.read_csv("C:/Users/JOOTEIK/ML/ASGM/BMCS2114-ASGM/Dataset/earthquake_data_no_outliers.csv")
+df = pd.read_csv("earthquake_data_no_outliers.csv")
 
 st.title("Data Visualization")
 st.title("   ")
@@ -142,8 +142,8 @@ from sklearn.metrics import silhouette_score
 from sklearn.decomposition import PCA
 
 # Load data
-df_outliers = pd.read_csv("C:/Users/JOOTEIK/ML/ASGM/BMCS2114-ASGM/Dataset/earthquake_data_outliers.csv")
-df_no_outliers = pd.read_csv("C:/Users/JOOTEIK/ML/ASGM/BMCS2114-ASGM/Dataset/earthquake_data_no_outliers.csv")
+df_outliers = pd.read_csv("earthquake_data_outliers.csv")
+df_no_outliers = pd.read_csv("earthquake_data_no_outliers.csv")
 
 # Select features for clustering
 clustering_data_1 = df_outliers[["magnitude", "cdi", "mmi", "tsunami", "sig", "dmin", "gap", "depth"]]
