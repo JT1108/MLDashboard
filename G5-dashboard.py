@@ -16,7 +16,23 @@ import numpy as np
 from minisom import MiniSom
 
 #------------------------------------------------------------------------------------#
+# Details of project
+st.title('Earthquake Clustering')
+st.title('  ')
 
+st.header('Feature Selection:')
+st.write('1. Magnitude: The magnitude of the earthquake.')
+st.write('2. Community Internet Intensity Map (CDI): The maximum reported intensity for the event range.')
+st.write('3. Modified Mercalli Intensity (MMI): The maximum estimated instrumental intensity for the event.')
+st.write('4. Tsunami: "1" for events in oceanic regions and "0" otherwise.')
+st.write('5. Significant Event ID (SIG): A number describing how significant the event is. Larger numbers indicate a more significant event.')
+st.write('6. Minimum Distance to Station (DMIN): Horizontal distance from the epicenter to the nearest station.')
+st.write('7. Azimuthal Gap (GAP): The largest azimuthal gap between azimuthally adjacent stations (in degrees).')
+st.write('8. Depth: The depth where the earthquake begins to rupture. ')
+st.title('  ')
+st.title('  ')
+
+#------------------------------------------------------------------------------------#
 # Earthquake Location and Impact Visualization
 
 # Load the earthquake data
@@ -157,7 +173,8 @@ minmax_data_scaled_2 = scaler.fit_transform(clustering_data_2)
 #------------------------------------------------------------------------------------#
 
 # K-Means
-
+st.title('  ')
+st.title('  ')
 st.title("K-Means")
 
 # Calculate WCSS for KMeans
@@ -491,7 +508,7 @@ st.header('Silhouette Scores')
 st.write("DBSCAN Silhouette Score (With Outliers):", dbscan1_silhouette)
 st.write("DBSCAN Silhouette Score (Without Outliers):", dbscan2_silhouette)
 
-# #------------------------------------------------------------------------------------#
+#------------------------------------------------------------------------------------#
 
 # # K-Medoids
 
@@ -665,7 +682,7 @@ st.write("DBSCAN Silhouette Score (Without Outliers):", dbscan2_silhouette)
 # st.write("Silhouette Score (With Outliers):", kmedoidsmin1_silhouette)
 # st.write("Silhouette Score (Without Outliers):", kmedoidsmin2_silhouette)
 
-# #------------------------------------------------------------------------------------#
+#------------------------------------------------------------------------------------#
 
 # Model Performance Comparision
 
@@ -759,18 +776,19 @@ cluster_mapping = {0: 'High Tsunami Risk Seismic Activity',
 
 # Streamlit App
 st.sidebar.title('Earthquake Cluster Predict')
+st.title('  ')
 
-st.sidebar.header('Input Data')
+# st.sidebar.header('Input Data')
 
 # User Input for prediction
-magnitude = st.sidebar.text_input('Magnitude', value='')
-cdi = st.sidebar.text_input('CDI', value='')
-mmi = st.sidebar.text_input('MMI', value='')
-tsunami = st.sidebar.selectbox('Tsunami', [0, 1])
-sig = st.sidebar.text_input('Sig', value='')
-dmin = st.sidebar.text_input('Dmin', value='')
-gap = st.sidebar.text_input('Gap', value='')
-depth = st.sidebar.text_input('Depth', value='')
+magnitude = st.sidebar.text_input('Earthquake magnitude', value='')
+cdi = st.sidebar.text_input('Community Decimal Intensities', value='')
+mmi = st.sidebar.text_input('Modified Mercalli Intensity', value='')
+tsunami = st.sidebar.selectbox('Tsunami(0 = False, 1 = True)', [0, 1])
+sig = st.sidebar.text_input('Significant Event ID', value='')
+dmin = st.sidebar.text_input('Minimum Distance to Station ', value='')
+gap = st.sidebar.text_input('Azimuthal gap', value='')
+depth = st.sidebar.text_input('Depth of Rupture', value='')
 
 if st.sidebar.button('Predict'):
     try:
